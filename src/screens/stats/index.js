@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { getDate } from "../../helpers";
 import DailyStatistics from "./daily";
 import WeeklyStatistics from "./weekly";
 
@@ -30,7 +31,7 @@ const Statistics = ({ date, navigation, route }) => {
           <Text onPress={() => navigation.goBack()}>
             <Icon name={"chevron-left"} size={23} color="grey" />
           </Text>
-          <Text>{route.params.date.getFullYear()}</Text>
+          <Text>{getDate(new Date(route.params.date.timestamp), new Date(route.params.date.timestamp).getDay())}</Text>
           <Text>{/* {route.params.date.getFullYear()} */}</Text>
         </View>
       </React.Fragment>

@@ -1,6 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import { IMAGES } from "../../../constants";
+
+const screenWidth = Dimensions.get("window").width;
 
 const WeeklyStatistics = ({}) => {
   const data = {
@@ -53,11 +56,39 @@ const WeeklyStatistics = ({}) => {
             propsForDots: {
               r: "6",
               strokeWidth: "2",
-              stroke: "##F6E9E7",
+              stroke: "#F6E9E7",
             },
           }}
           verticalLabelRotation={0}
         />
+      </View>
+      <View style={styles.separator}></View>
+      <View style={styles.receommendation}>
+        <Text style={{ marginBottom: 15, fontSize: 16, fontWeight: 'bold', lineHeight: 26 }}>Recommendation</Text>
+        <Image
+          source={IMAGES.recommendation}
+          style={{
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            position: "relative",
+            left: 0,
+            right: 0,
+            width: "100%",
+          }}
+        />
+        <Text
+          style={{
+            color: "#C4C4C4",
+            fontWeight: "bold",
+            marginBottom: 5,
+            marginTop: -20,
+          }}
+        >
+          1-on-1 Session
+        </Text>
+        <Text style={{ marginBottom: 20 }}>
+          Talk to our therapists about employee burnout?
+        </Text>
       </View>
     </View>
   );
@@ -78,8 +109,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
+    lineHeight: 21
   },
   number: {
     color: "#E3A89F",
@@ -88,5 +120,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     justifyContent: "center",
     alignSelf: "center",
+  },
+  separator: {
+    width: screenWidth,
+    marginTop: 20,
+    marginBottom: 20,
+    borderBottomWidth: 0.5,
+    borderColor: "#000",
+    // position: 'absolute',
+    // left: 0,
+    right: 0,
   },
 });

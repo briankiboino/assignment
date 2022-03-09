@@ -10,10 +10,18 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 
+const screenWidth = Dimensions.get("window").width;
+
 const DailyStatistics = ({}) => {
   const data = {
-    labels: ["Swim", "Bike", "Run"], // optional
-    data: [0.4, 0.6, 0.8],
+    labels: [
+      "Mental Health",
+      "Satisfaction",
+      "Family/Social Support",
+      "Work",
+      "Sense of Purpose",
+    ], // optional
+    data: [0.2, 0.1, 0.8, 0.7, 0.9],
   };
 
   return (
@@ -21,26 +29,18 @@ const DailyStatistics = ({}) => {
       <View style={styles.chart}>
         <ProgressChart
           data={data}
-          width={Dimensions.get("window").width - 60}
+          width={screenWidth - 60}
           height={220}
-          strokeWidth={16}
-          radius={32}
+          strokeWidth={8}
           chartConfig={{
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
+            //backgroundColor: '#478438',
             backgroundGradientFrom: "#FFF",
             backgroundGradientTo: "#FFF",
-            backgroundGradientToOpacity: 0.1,
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `#E3A89F`,
-            labelColor: (opacity = 1) => `grey`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "##F6E9E7",
-            },
+            //decimalPlaces: 2,
+            color: (opacity = 1) => `rgba(227, 168, 159, ${opacity})`,
+          }}
+          style={{
+            borderRadius: 15,
           }}
           hideLegend={true}
         />
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
     marginBottom: 15,
-    marginTop: 30
+    marginTop: 30,
   },
   elevation: {
     // elevation: 20,

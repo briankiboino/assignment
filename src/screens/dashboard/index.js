@@ -5,7 +5,10 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  ImageBackground,
+  Image,
+  ScrollView,
 } from "react-native";
 import { getDate } from "../../helpers";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
@@ -19,19 +22,25 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from "react-native-chart-kit";
-
+import { IMAGES } from "../../constants";
+const screenWidth = Dimensions.get("window").width;
 
 const Dashboard = ({ navigation }) => {
   let _date = new Date();
 
   const data = {
-    labels: ["Swim", "Bike", "Run"], // optional
-    data: [0.4, 0.6, 0.8],
+    labels: [
+      "Mental Health",
+      "Satisfaction",
+      "Family/Social Support",
+      "Work",
+      "Sense of Purpose",
+    ], // optional
+    data: [0.2, 0.1, 0.8, 0.7, 0.9],
   };
 
-
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <StatusBar backgroundColor="#85BDAF" barStyle="light-content" />
       <View style={{ backgroundColor: "#E5E5E5" }}>
         <View style={styles.calendar_container}>
@@ -39,7 +48,52 @@ const Dashboard = ({ navigation }) => {
           <Text style={styles.current_date}>
             {getDate(new Date(), _date.getDay())} {}
           </Text>
-          <View style={styles.calendar}></View>
+          <View style={styles.calendar}>
+            <Calendar
+              current={"2012-03-01"}
+              onDayPress={(day) => {
+                navigation.navigate("Statistics", {
+                  date: day,
+                })
+              }}
+              onDayLongPress={(day) => {
+                navigation.navigate("Statistics", {
+                  date: day,
+                })
+              }}
+              monthFormat={"yyyy MM"}
+              onMonthChange={(month) => {
+                console.log("month changed", month);
+              }}
+              hideArrows={true}
+              renderArrow={(direction) => (
+                <Text>
+                  <Icon name={`chevron-${direction}`} size={12} color="#FFF" />
+                </Text>
+              )}
+              hideExtraDays={true}
+              disableMonthChange={true}
+              firstDay={1}
+              hideDayNames={false}
+              showWeekNumbers={true}
+              onPressArrowLeft={(subtractMonth) => subtractMonth()}
+              onPressArrowRight={(addMonth) => addMonth()}
+              disableArrowLeft={false}
+              disableArrowRight={false}
+              disableAllTouchEventsForDisabledDays={true}
+              renderHeader={(date) => {
+                <View>{date}</View>;
+              }}
+              style={{
+                // height: 137,
+                width: screenWidth-60,
+                borderRadius: 20,
+                backgroundColor:
+                  "radial-gradient(87.58% 209.18% at 6.09% 10.16%, rgba(188, 217, 209, 0.6) 0%, rgba(188, 217, 209, 0.6) 100%)",
+              }}
+              enableSwipeMonths={true}
+            />
+          </View>
           <TouchableOpacity
             style={styles.show_more}
             onPress={() =>
@@ -48,7 +102,9 @@ const Dashboard = ({ navigation }) => {
               })
             }
           >
-            <Text style={{ color: "#FFF", marginRight: 10 }}>Show More</Text>
+            <Text style={{ color: "#FFF", marginRight: 10, fontSize: 12 }}>
+              Show More
+            </Text>
             <Text>
               <Icon name={"chevron-down"} size={12} color="#FFF" />
             </Text>
@@ -59,31 +115,22 @@ const Dashboard = ({ navigation }) => {
         <View style={[styles.card, styles.elevation]}>
           <Text style={{ color: "#C4C4C4", fontWeight: "bold" }}>TODAY</Text>
           <View style={styles.stats}>
-          <ProgressChart
-          data={data}
-          width={Dimensions.get("window").width - 120}
-          height={220}
-          strokeWidth={16}
-          radius={32}
-          chartConfig={{
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
-            backgroundGradientFrom: "#FFF",
-            backgroundGradientTo: "#FFF",
-            backgroundGradientToOpacity: 0.1,
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `#E3A89F`,
-            labelColor: (opacity = 1) => `grey`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "##F6E9E7",
-            },
-          }}
-          hideLegend={false}
-        />
+            <ProgressChart
+              data={data}
+              width={screenWidth - 90}
+              height={180}
+              strokeWidth={8}
+              chartConfig={{
+                //backgroundColor: '#478438',
+                backgroundGradientFrom: "#FFF",
+                backgroundGradientTo: "#FFF",
+                //decimalPlaces: 2,
+                color: (opacity = 1) => `rgba(227, 168, 159, ${opacity})`,
+              }}
+              style={{
+                borderRadius: 15,
+              }}
+            />
           </View>
           <TouchableOpacity
             style={styles.more}
@@ -93,15 +140,110 @@ const Dashboard = ({ navigation }) => {
               })
             }
           >
-            <Text style={{ color: "#C4C4C4", marginRight: 10 }}>More</Text>
+            <Text style={{ color: "#C4C4C4", marginRight: 10, fontSize: 12 }}>
+              More
+            </Text>
             <Text>
               <Icon name={"chevron-right"} size={12} color="#C4C4C4" />
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={[styles.card, styles.elevation]}></View>
+        <View style={[styles.card, styles.elevation, { paddingBottom: 40 }]}>
+          <Text
+            style={{
+              color: "#C4C4C4",
+              lineHeight: 26,
+              fontSize: 12,
+              marginBottom: 15,
+            }}
+          >
+            Your Wellness plan
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                height: 115,
+                width: 84,
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 20,
+              }}
+            >
+              <Image source={IMAGES.wellnes_plan} />
+              <View style={styles.image_component}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 22,
+                    color: "#FFF",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Veronicah N.
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 22,
+                    color: "#FFF",
+                    marginBottom: 5,
+                  }}
+                >
+                  Shamiri Licensed
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                height: 115,
+                width: 84,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image source={IMAGES.wellnes_plan} />
+              <View style={styles.image_component}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 22,
+                    color: "#FFF",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Veronicah N.
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 22,
+                    color: "#FFF",
+                    marginBottom: 5,
+                  }}
+                >
+                  Shamiri Licensed
+                </Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={styles.more}
+            onPress={() =>
+              navigation.navigate("Statistics", {
+                date: _date,
+              })
+            }
+          >
+            <Text style={{ color: "#C4C4C4", marginRight: 10, fontSize: 12 }}>
+              More
+            </Text>
+            <Text>
+              <Icon name={"chevron-right"} size={12} color="grey" />
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -132,7 +274,12 @@ const styles = StyleSheet.create({
     color: "#FFF",
     lineHeight: 26,
   },
-  calendar: {},
+  calendar: {
+    // paddingTop: 20,
+    // paddingBottom: 20,
+    height: 200,
+    borderRadius: 20,
+  },
   show_more: {
     position: "absolute",
     bottom: 18,
@@ -181,5 +328,28 @@ const styles = StyleSheet.create({
   },
   stats: {
     marginBottom: 10,
+  },
+  image_component: {
+    position: "absolute",
+    bottom: 2,
+    left: 0,
+    right: 0,
+    backgroundColor: "#53A08C",
+    opacity: 0.3,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+  },
+  more: {
+    position: "absolute",
+    bottom: 0,
+    right: 20,
+    flexDirection: "row",
+    display: "flex",
+    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 18,
   },
 });
